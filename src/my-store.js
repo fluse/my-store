@@ -47,8 +47,9 @@ export default class Storage {
             }
 
             store = JSON.parse(store);
+            let now = Moment();
 
-            if (moment(store.expiredAt) < moment()) {
+            if (Moment(store.expiredAt).isBefore(now)) {
                 this.removeStore(name);
                 return null;
             }
