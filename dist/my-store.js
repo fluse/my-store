@@ -68,8 +68,9 @@ var Storage = function () {
                 }
 
                 store = JSON.parse(store);
+                var now = (0, _moment2.default)();
 
-                if (moment(store.expiredAt) < moment()) {
+                if ((0, _moment2.default)(store.expiredAt).isBefore(now)) {
                     this.removeStore(name);
                     return null;
                 }
