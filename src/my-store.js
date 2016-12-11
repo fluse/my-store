@@ -33,7 +33,7 @@ export default class Storage {
         }
     }
 
-    getStore(name) {
+    getStore(name, callback = () => {}) {
 
         if (!this.isClient) {
             return null;
@@ -52,6 +52,10 @@ export default class Storage {
                 this.removeStore(name);
                 return null;
             }
+
+            setTimeout(() => {
+                callback(store.data);
+            }, 1);
 
             return store.data;
         } catch (e) {
