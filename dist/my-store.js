@@ -72,7 +72,7 @@ var Storage = function () {
                     return null;
                 }
 
-                return JSON.parse(store);
+                return store.data;
             } catch (e) {
                 return null;
             }

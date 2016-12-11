@@ -29,7 +29,7 @@ export default class Storage {
         try {
             localStorage.setItem(name, JSON.stringify(store));
         } catch (e) {
-            
+
         }
     }
 
@@ -53,7 +53,7 @@ export default class Storage {
                 return null;
             }
 
-            return JSON.parse(store);
+            return store.data;
         } catch (e) {
             return null;
         }
