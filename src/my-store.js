@@ -54,7 +54,9 @@ export default class Storage {
                 return null;
             }
 
-            callback(store.data);
+            setTimeout(() => {
+                callback(store.data);
+            }, 1);
 
             return store.data;
         } catch (e) {

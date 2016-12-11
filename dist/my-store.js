@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _moment = require('moment');
@@ -53,6 +55,8 @@ var Storage = function () {
     }, {
         key: 'getStore',
         value: function getStore(name) {
+            var _this = this;
+
             var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
 
 
@@ -61,23 +65,35 @@ var Storage = function () {
             }
 
             try {
-                var store = localStorage.getItem(name);
+                var _ret = function () {
+                    var store = localStorage.getItem(name);
 
-                if (!store) {
-                    return null;
-                }
+                    if (!store) {
+                        return {
+                            v: null
+                        };
+                    }
 
-                store = JSON.parse(store);
-                var now = (0, _moment2.default)();
+                    store = JSON.parse(store);
+                    var now = (0, _moment2.default)();
 
-                if ((0, _moment2.default)(store.expiredAt).isBefore(now)) {
-                    this.removeStore(name);
-                    return null;
-                }
+                    if ((0, _moment2.default)(store.expiredAt).isBefore(now)) {
+                        _this.removeStore(name);
+                        return {
+                            v: null
+                        };
+                    }
 
-                callback(store.data);
+                    setTimeout(function () {
+                        callback(store.data);
+                    }, 1);
 
-                return store.data;
+                    return {
+                        v: store.data
+                    };
+                }();
+
+                if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
             } catch (e) {
                 return null;
             }
