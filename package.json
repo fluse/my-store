@@ -1,7 +1,7 @@
 {
     "name": "my-store",
-    "version": "0.1.7",
-    "description": "localstorage with expiration option and isomorphic check",
+    "version": "0.1.8",
+    "description": "localstorage with encryption, expiration option and isomorphic check",
     "main": "dist/my-store.js",
     "repository": {
         "type": "git",
