@@ -86,7 +86,7 @@ var Storage = function () {
                         };
                     }
 
-                    var encrypedStore = _cryptoJs2.default.AES.decrypt(ciphertext.toString(), options.secret);
+                    var encrypedStore = _cryptoJs2.default.AES.decrypt(store.toString(), options.secret);
 
                     store = JSON.parse(encrypedStore);
                     var now = (0, _moment2.default)();

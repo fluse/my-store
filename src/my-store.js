@@ -52,7 +52,7 @@ export default class Storage {
                 return null;
             }
 
-            let encrypedStore = CryptoJS.AES.decrypt(ciphertext.toString(), options.secret);
+            let encrypedStore = CryptoJS.AES.decrypt(store.toString(), options.secret);
 
             store = JSON.parse(encrypedStore);
             let now = Moment();
