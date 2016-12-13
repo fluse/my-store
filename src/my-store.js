@@ -6,13 +6,13 @@ import CryptoJS from 'crypto-js';
 
 export default class Storage {
 
-    constructor() {
+    constructor(options = {}) {
         this.isClient = (typeof window !== 'undefined');
 
-        this.defaultOptions = {
+        this.defaultOptions = extend({
             expiration: 24,
             secret: 'myStore'
-        }
+        }, options);
     }
 
     setStore(name, data, options = {}) {
