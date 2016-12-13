@@ -87,8 +87,8 @@ var Storage = function () {
                     }
 
                     var encrypedStore = _cryptoJs2.default.AES.decrypt(store.toString(), options.secret);
-
-                    store = JSON.parse(encrypedStore);
+                    var stringifiedStore = encrypedStore.toString(_cryptoJs2.default.enc.Utf8);
+                    store = JSON.parse(stringifiedStore);
                     var now = (0, _moment2.default)();
 
                     if ((0, _moment2.default)(store.expiredAt).isBefore(now)) {

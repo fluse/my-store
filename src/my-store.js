@@ -53,8 +53,8 @@ export default class Storage {
             }
 
             let encrypedStore = CryptoJS.AES.decrypt(store.toString(), options.secret);
-
-            store = JSON.parse(encrypedStore);
+            let stringifiedStore = encrypedStore.toString(CryptoJS.enc.Utf8)
+            store = JSON.parse(stringifiedStore);
             let now = Moment();
 
             if (Moment(store.expiredAt).isBefore(now)) {
