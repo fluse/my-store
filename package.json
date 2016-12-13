@@ -1,6 +1,6 @@
 {
     "name": "my-store",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "localstorage with expiration option and isomorphic check",
     "main": "dist/my-store.js",
     "repository": {
@@ -11,7 +11,8 @@
         "localstore",
         "expiration",
         "visibility",
-        "isomorphic"
+        "isomorphic",
+        "encryption"
     ],
     "author": "Holger Schauf",
     "website": "http://www.holger-schauf.de",
@@ -24,8 +25,9 @@
         "compile": "babel ./src/my-store.js -o ./dist/my-store.js"
     },
     "dependencies": {
-        "moment": "^2.15.2",
-        "extend": "^3.0.0"
+        "crypto-js": "^3.1.8",
+        "extend": "^3.0.0",
+        "moment": "^2.15.2"
     },
     "devDependencies": {
         "babel-cli": "^6.8.0",

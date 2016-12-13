@@ -2,6 +2,7 @@
 
 import Moment from 'moment';
 import extend from 'extend';
+import CryptoJS from 'crypto-js';
 
 export default class Storage {
 
@@ -9,7 +10,8 @@ export default class Storage {
         this.isClient = (typeof window !== 'undefined');
 
         this.defaultOptions = {
-            expiration: 24
+            expiration: 24,
+            secret: 'myStore'
         }
     }
 
@@ -27,17 +29,21 @@ export default class Storage {
         }
 
         try {
-            localStorage.setItem(name, JSON.stringify(store));
+            let stringified = JSON.stringify(store);
+            let encrypedStore = CryptoJS.AES.encrypt(stringified, options.secret);
+            localStorage.setItem(name, encrypedStore);
         } catch (e) {
 
         }
     }
 
-    getStore(name, callback = () => {}) {
+    getStore(name, callback = () => {}, options = {}) {
 
         if (!this.isClient) {
             return null;
         }
+
+        options = extend({}, this.defaultOptions, options);
 
         try {
             let store = localStorage.getItem(name);
@@ -46,7 +52,9 @@ export default class Storage {
                 return null;
             }
 
-            store = JSON.parse(store);
+            let encrypedStore = CryptoJS.AES.decrypt(ciphertext.toString(), options.secret);
+
+            store = JSON.parse(encrypedStore);
             let now = Moment();
 
             if (Moment(store.expiredAt).isBefore(now)) {
