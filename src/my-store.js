@@ -37,6 +37,15 @@ export default class Storage {
         }
     }
 
+    onlyOnClient(cb = () => {}) {
+
+        if (!this.isClient) {
+            return null;
+        }
+
+        cb();
+    }
+
     getStore(name, callback = () => {}, options = {}) {
 
         if (!this.isClient) {

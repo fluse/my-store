@@ -62,6 +62,18 @@ var Storage = function () {
             } catch (e) {}
         }
     }, {
+        key: 'onlyOnClient',
+        value: function onlyOnClient() {
+            var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+
+            if (!this.isClient) {
+                return null;
+            }
+
+            cb();
+        }
+    }, {
         key: 'getStore',
         value: function getStore(name) {
             var _this = this;
