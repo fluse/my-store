@@ -2,7 +2,6 @@
 
 import Moment from 'moment';
 import extend from 'extend';
-import CryptoJS from 'crypto-js';
 
 export default class Storage {
 
@@ -29,9 +28,7 @@ export default class Storage {
         }
 
         try {
-            let stringified = JSON.stringify(store);
-            let encrypedStore = CryptoJS.AES.encrypt(stringified, options.secret);
-            localStorage.setItem(name, encrypedStore);
+            localStorage.setItem(name, JSON.stringify(store));
         } catch (e) {
 
         }
@@ -61,9 +58,7 @@ export default class Storage {
                 return null;
             }
 
-            let encrypedStore = CryptoJS.AES.decrypt(store.toString(), options.secret);
-            let stringifiedStore = encrypedStore.toString(CryptoJS.enc.Utf8)
-            store = JSON.parse(stringifiedStore);
+            store = JSON.parse(store);
             let now = Moment();
 
             if (Moment(store.expiredAt).isBefore(now)) {

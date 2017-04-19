@@ -1,6 +1,6 @@
 {
     "name": "my-store",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "localstorage with encryption, expiration option and isomorphic check",
     "main": "dist/my-store.js",
     "repository": {
@@ -25,7 +25,6 @@
         "compile": "babel ./src/my-store.js -o ./dist/my-store.js"
     },
     "dependencies": {
-        "crypto-js": "^3.1.8",
         "extend": "^3.0.0",
         "moment": "^2.15.2"
     },
