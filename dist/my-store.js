@@ -54,6 +54,18 @@ var Storage = function () {
             } catch (e) {}
         }
     }, {
+        key: 'cleanStores',
+        value: function cleanStores() {
+            try {
+                var storages = localStorage;
+
+                for (var name in storages) {
+                    var store = this.decrypt(storage[name], this.defaultOptions);
+                    this.removeOnExpiration(name, store);
+                }
+            } catch (e) {}
+        }
+    }, {
         key: 'onlyOnClient',
         value: function onlyOnClient() {
             var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
@@ -64,6 +76,17 @@ var Storage = function () {
             }
 
             cb();
+        }
+    }, {
+        key: 'decrypt',
+        value: function decrypt(store, options) {
+            if (!store) return null;
+
+            try {
+                return JSON.parse(store);
+            } catch (e) {
+                return null;
+            }
         }
     }, {
         key: 'getStore',
@@ -81,15 +104,10 @@ var Storage = function () {
             try {
                 var store = localStorage.getItem(name);
 
+                store = this.decrypt(store, options);
+                store = this.removeOnExpiration(name, store);
+
                 if (!store) {
-                    return null;
-                }
-
-                store = JSON.parse(store);
-                var now = (0, _moment2.default)();
-
-                if ((0, _moment2.default)(store.expiredAt).isBefore(now)) {
-                    this.removeStore(name);
                     return null;
                 }
 
@@ -103,6 +121,21 @@ var Storage = function () {
             }
         }
     }, {
+        key: 'removeOnExpiration',
+        value: function removeOnExpiration(name, store) {
+
+            if (!store) return null;
+
+            var now = (0, _moment2.default)();
+
+            if ((0, _moment2.default)(store.expiredAt).isBefore(now)) {
+                this.removeStore(name);
+                return null;
+            }
+
+            return store;
+        }
+    }, {
         key: 'removeStore',
         value: function removeStore(name) {
 
@@ -112,7 +145,10 @@ var Storage = function () {
 
             try {
                 localStorage.removeItem(name);
-            } catch (e) {}
+                return true;
+            } catch (e) {
+                return false;
+            }
         }
     }]);
 

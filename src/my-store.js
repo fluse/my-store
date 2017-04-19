@@ -34,6 +34,19 @@ export default class Storage {
         }
     }
 
+    cleanStores() {
+        try {
+            let storages = localStorage;
+
+            for (let name in storages) {
+                let store = this.decrypt(storage[name], this.defaultOptions);
+                this.removeOnExpiration(name, store);
+            }
+        } catch (e) {
+
+        }
+    }
+
     onlyOnClient(cb = () => {}) {
 
         if (!this.isClient) {
@@ -41,6 +54,16 @@ export default class Storage {
         }
 
         cb();
+    }
+
+    decrypt(store, options) {
+        if (!store) return null;
+
+        try {
+            return JSON.parse(store);
+        } catch (e) {
+            return null;
+        }
     }
 
     getStore(name, callback = () => {}, options = {}) {
@@ -54,15 +77,10 @@ export default class Storage {
         try {
             let store = localStorage.getItem(name);
 
+            store = this.decrypt(store, options);
+            store = this.removeOnExpiration(name, store);
+
             if (!store) {
-                return null;
-            }
-
-            store = JSON.parse(store);
-            let now = Moment();
-
-            if (Moment(store.expiredAt).isBefore(now)) {
-                this.removeStore(name);
                 return null;
             }
 
@@ -76,6 +94,20 @@ export default class Storage {
         }
     }
 
+    removeOnExpiration(name, store) {
+
+        if (!store) return null;
+
+        let now = Moment();
+
+        if (Moment(store.expiredAt).isBefore(now)) {
+            this.removeStore(name);
+            return null;
+        }
+
+        return store;
+    }
+
     removeStore(name) {
 
         if (!this.isClient) {
@@ -84,8 +116,9 @@ export default class Storage {
 
         try {
             localStorage.removeItem(name);
+            return true;
         } catch (e) {
-
+            return false;
         }
     }
 
