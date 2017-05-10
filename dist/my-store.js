@@ -111,9 +111,7 @@ var Storage = function () {
                     return null;
                 }
 
-                setTimeout(function () {
-                    callback(store.data);
-                }, 1);
+                callback(store.data);
 
                 return store.data;
             } catch (e) {
